@@ -1,8 +1,8 @@
 {
-  "name": "testy",
+  "name": "test",
   "version": "0.1.0",
   "bin": {
-    "testy": "bin/testy.js"
+    "testy": "app.js"
   },
   "scripts": {
     "build": "tsc",
@@ -21,7 +21,7 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.38.1",
+    "aws-cdk-lib": "^2.38.1",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
   }

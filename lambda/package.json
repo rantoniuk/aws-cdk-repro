@@ -1,0 +1,19 @@
+{
+  "name": "test-lambda",
+  "version": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "npm run tsc -b",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "aws-lambda": "latest"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.97",
+    "@types/node": "^18.7.13",
+    "ts-node": "^10.8.0",
+    "typescript": "~4.7.2"
+  }
+}
