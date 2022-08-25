@@ -13,8 +13,8 @@ import { Bucket, IBucket } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 
 export enum Accounts {
-  DEVOPS = "506746435521",
-  TEST = "769916547052",
+  DEVOPS = "XXXX",
+  TEST = "YYYY",
 }
 
 export interface CdkConstructProps {
@@ -61,11 +61,7 @@ export class DynamicPipelineConstruct extends Construct {
 
     // shared encryption key used for all objects stored in the bucket
     // at the moment unable to use SSE-S3 because of CDK limitations
-    this.encryptionKey = Key.fromKeyArn(
-      this,
-      "pipelineArtifactKeyArn",
-      Fn.importValue("sdg-pipeline-artifact-bucket-encryptionkeyArn"),
-    );
+    this.encryptionKey = Key.fromKeyArn(this, "pipelineArtifactKeyArn", Fn.importValue("bucket-encryptionkeyArn"));
 
     this.artifactBucket = Bucket.fromBucketAttributes(this, "cdkBucket", {
       // bucketArn: `arn:aws:s3:::cdk-${DefaultStackSynthesizer.DEFAULT_QUALIFIER}-assets-${Aws.ACCOUNT_ID}-${Aws.REGION}`,
@@ -87,7 +83,7 @@ export class DynamicPipelineConstruct extends Construct {
       actions: [
         new S3SourceAction({
           actionName: "SCM-source",
-          bucket: Bucket.fromBucketName(this, "SourceBucket", "test-bucket-506746435521"),
+          bucket: Bucket.fromBucketName(this, "SourceBucket", `test-bucket-${Accounts.DEVOPS}`),
           role: this.pipeline.role,
           bucketKey: "source.zip",
           output: this.sourceOutput,
@@ -132,7 +128,6 @@ class CdkBuildConstruct extends Construct {
             "runtime-versions": { nodejs: 14 },
             commands: [
               "aws --version",
-              // "aws codeartifact login --tool npm --repository sdg-common-repository --domain sdg-repository --domain-owner 506746435521",
               "npx cdk --version",
               "cd cdk && npm ci && cd $CODEBUILD_SRC_DIR",
               "cd lambda && npm ci && cd $CODEBUILD_SRC_DIR",
